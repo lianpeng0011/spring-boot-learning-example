@@ -40,10 +40,25 @@
 每个实体必须存在主键，主键必须定义在实体类
 
 - 简单主键
-  - `@Id`
+
+  - `@Id`  指定主键列
+  - @GeneratedValue 用于标注主键生成策略，通过strategy来指定生成策略，默认为GenerationType .AUTO。
+  - GenerationType 
+    - AUTO：JAP默认选择合适的策略，默认值
+    - TABLE：通过表产生主见，框架借由表模拟序列生成主键，使用该策略可以使数据库更方便迁移
+    - IDENTITY：采用数据库ID自增长的方式来进行主键自增，Oracle不支持该策略
+    - SEQUENCE：通过序列产生主键，通过`@SequenceGenerator`注解指定序列名，Mysql不支持这种方式。
+
+  > `@GeneratedValue` 策略自定义：
+  >
+  > `@GeneratedValue(strategy="uuid")`
+  >
+  > `@GenericGenerator(name="uuid", strategy="package.classname")` 
+  >
+  > 自定义策略类必须实现IdentifierGenerator接口
 - 复合主键
-  - `@EmbeddedId`
-  - `@IdClass`
+  - `@EmbeddedId` 嵌套式主键
+  - `@IdClass` 复合主键
 
 #### 实体关系
 
@@ -66,7 +81,118 @@
   - 双向一对一关系中，主方相当于包含外键的一方
   - 双向多对多关系中，任何一方可能拥有主方
 
-#### 主键生成策略 GeneratedValue
+#### 实体继承（Inheritance）
 
+实体可以继承其他实体。实体之间支持继承、多态关联、多态查询。
 
+- 继承方式：
+
+  - 继承抽象实体类
+
+    - @Inheritance  使用`strategy`设置继承策略，策略类型
+
+      - TABLE_REP_CLASS 每个实体类生成一张独立表，子类生成表中包含父类属性
+      - JONED  每个实体类生成不同的表，表之间通过外键进行关联
+      - SINGLE_TABLE 子类和父类公用一张表，创建一个新的字段用于区分对象的类型。
+
+      > @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+      >
+      > @DiscriminationCloumn(name="TYPE",discriminationType=DiscriminationType.STRING)
+      >
+      > @DiscriminatorValue("type_value")
+      >
+      > 使用`@DiscriminationCloumn`注解在表中新添加类型列，用于区分数据入库的实体类型，`discriminationType`属性用于确定该字段的类型。如：STRING、INTEGER、CHAR
+      >
+      > 使用`DiscrimiatorValue`注解设置该类对应的类型值
+
+  - 继承已映射父类型
+
+    - @MappedSuperclass 公用属性抽象成一个父类，父类不会生成表，父类的属性会映射到子类的表中
+    - @AssociationOverride 当一个实体类中引用两个相同的对象，就会发生冲突，使用该注解决绝冲突
+
+    ```java
+    @Entity(name = "Book")
+    @AttributeOverrides({
+    	@AttributeOverride(
+    		name = "ebookPublisher.name",
+    		column = @Column(name = "ebook_publisher_name")
+    	),
+    	@AttributeOverride(
+    		name = "paperBackPublisher.name",
+    		column = @Column(name = "paper_back_publisher_name")
+    	)
+    })
+    @AssociationOverrides({
+    	@AssociationOverride(
+    		name = "ebookPublisher.country",
+    		joinColumns = @JoinColumn(name = "ebook_publisher_country_id")
+    	),
+    	@AssociationOverride(
+    		name = "paperBackPublisher.country",
+    		joinColumns = @JoinColumn(name = "paper_back_publisher_country_id")
+    	)
+    })
+    public static class Book {
+    
+    	@Id
+    	@GeneratedValue
+    	private Long id;
+    
+    	private String title;
+    
+    	private String author;
+    
+    	private Publisher ebookPublisher;
+    
+    	private Publisher paperBackPublisher;
+    
+    	//Getters and setters are omitted for brevity
+    }
+    ```
+
+  - 继承非实体类型
+
+#### 实体类操作(Operations)
+
+- 实体类管理器
+  - EntityManager
+
+#### 实体类生命周期(Life Cycle)
+
+- 创建
+- 持久化
+- 移除
+- 同步到数据库
+- 刷新实例
+- 淘汰
+
+#### 实现监听器和回调方法
+
+- 实体监听器
+  - @EntityListeners
+- 回调方法
+  - prePersist
+  - postPersist
+  - preRemove
+  - postRemove
+  - preUpdate
+  - postUpdate
+  - postLoad
+
+#### Spring Data API
+
+- 缓存（caching）
+- 查询API（Query API）
+- Criteria API
+- 元模型API（Metamodel API）
+
+#### Spring Data Repository
+
+- 核心接口
+  - Repository
+  - CrudRepository
+  - JPARepository
+  - @NoRepositoryBean 自定义实现扩展
+- 激活JPA Repository
+  - @EnableJpaRepositories 开启jpa存储库扫描
 

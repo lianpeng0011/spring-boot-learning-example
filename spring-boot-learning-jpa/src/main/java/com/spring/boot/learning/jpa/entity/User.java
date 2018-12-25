@@ -1,5 +1,7 @@
 package com.spring.boot.learning.jpa.entity;
 
+import com.spring.boot.learning.jpa.entity.listener.UserListener;
+
 import javax.persistence.*;
 
 /**
@@ -9,6 +11,7 @@ import javax.persistence.*;
  **/
 @Entity
 @Table
+@EntityListeners( UserListener.class )
 public class User {
 
     @Id
@@ -20,6 +23,10 @@ public class User {
 
     @Column( length = 3)
     private int age;
+
+    @JoinColumn(name = "CARD_ID")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private CreditCard creditCard;
 
     public Long getId() {
         return id;
@@ -45,12 +52,21 @@ public class User {
         this.age = age;
     }
 
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    public void setCreditCard( CreditCard creditCard ) {
+        this.creditCard = creditCard;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                "id=" + id +
                ", name='" + name + '\'' +
                ", age=" + age +
+               ", creditCard" + creditCard +
                '}';
     }
 }

@@ -1,5 +1,7 @@
 package com.spring.boot.learning.jpa.entity;
 
+import org.springframework.data.annotation.CreatedDate;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
@@ -15,6 +17,7 @@ import java.util.Date;
 @Access( AccessType.FIELD )
 public class AbstractEntity {
 
+    @CreatedDate
     @Column(name = "CREATE_TIME", columnDefinition = "datetime ")
     private Date createTime;
 

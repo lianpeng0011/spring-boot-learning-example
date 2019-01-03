@@ -1,6 +1,6 @@
 package com.spring.boot.learning.jpa.entity;
 
-import com.spring.boot.learning.jpa.entity.listener.UserListener;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
@@ -11,8 +11,8 @@ import javax.persistence.*;
  **/
 @Entity
 @Table
-@EntityListeners( UserListener.class )
-public class User {
+@EntityListeners( AuditingEntityListener.class )
+public class User extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

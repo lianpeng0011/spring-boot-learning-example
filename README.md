@@ -17,3 +17,9 @@
 - Spring Data JPA
 - Spring Data Repository
 
+### Spring-boot-learning-Validation [example](https://github.com/lianpeng0011/spring-boot-learning-example/tree/master/spring-boot-learning-validation)
+
+- Bean Validation 
+- Validation  国际化
+- Validation 自定义
+- Validation Spring boot 结合

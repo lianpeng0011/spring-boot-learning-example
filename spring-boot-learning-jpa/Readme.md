@@ -6,7 +6,7 @@
 
 #### JPI1.0
 
- 2016年JPI1.0最终规范发布（JSR-220）。整合了查询语句Query 和对象关系映射（ORM）元数据定义
+ 2006年JPI1.0最终规范发布（JSR-220）。整合了查询语句Query 和对象关系映射（ORM）元数据定义
 
 #### JPI2.0
 
@@ -193,6 +193,89 @@
   - CrudRepository
   - JPARepository
   - @NoRepositoryBean 自定义实现扩展
+  - @RepositoryDefinition
 - 激活JPA Repository
   - @EnableJpaRepositories 开启jpa存储库扫描
+
+#### null Handling of Repository Methods
+
+- 可空性注释
+
+  - @NonNullApi 包级别注释  返回值和参数是不接受null
+  - @NonNull  参数或者返回值必须不等于null   参数、方法和Field
+  - @Nullable  参数和返回值可以为null   参数、方法和Field
+
+  > 注解匹配  参数 > 方法 >  package
+
+#### 查询创建
+
+- 查询构建器识别语法 find...By 、read...By、query...By、count...By、 get...By。by作为分隔符后面添加条件条件可以使用`And`或`Or`进行连接，也可以使用`OrderBy... ASC ` 来进行排序
+
+- 表达式除`And` 和`Or`之外还支持`Between`、`LessThan`、`GreaterThan`和`Like`
+
+- 表达式支持`IgnoreCase` 用于忽略 String 条件的大小写
+
+- 驼峰风格`findByAddressZipCode`  解析器首先会在对象中查找`AddressZipCode`属性，如果没有，就采用驼峰规则进行解析。驼峰解析从右开始进行。`Object.address.zipCode`解析完成后进行调用
+
+  > 注: 也可以通过`_`方式进行快速解析，但是不符合Java命名约定，不推荐使用
+
+- 特殊参数处理 
+
+  - `org.springframework.data.domain.Pageable` 分页 该操作可能很重。
+  - Slice  分页时，返回下个可用页的信息
+  - `org.springframework.data.domain.Sort`  排序
+
+- Stream Query Results   需要注意的是在使用Stream后需要手动调用`close()`或者`try-with-resources`。并不是所有的Spring Data 模块都支持Stream<T>
+  - `find...By...AndStream`
+  - `StreamAllPaged(Pageable pageable)`
+
+- Async Query Results    需要在方法上添加@Async注解进行标注
+
+  ```java
+  @Async
+  Future<User> findByFirstname(String firstname);
+  ```
+
+  - `java.util.concurrent.Future` 返回值
+  - `java.util.concurrent.CompletableFuture` 返回值
+  - `org.springframework.util.concurrent.ListenableFuture` 返回值
+
+#### XML 配置
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.springframework.org/schema/data/jpa"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/data/jpa
+    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+  <repositories base-package="com.acme.repositories" >
+      <context:exclude-filter type="regex" expression=".*SomeRepository" />
+      <context:include-filter type="regex" expression=".*SomeRepository" />
+    </repositories>
+</beans:beans>
+```
+
+Java 配置
+
+使用`@Enable${store}Repositories`进行激活
+
+```java
+@Configuration
+@EnableJpaRepositories("com.acme.repositories")
+class ApplicationConfiguration {
+  @Bean
+  EntityManagerFactory entityManagerFactory() {
+    // …
+  }
+}
+```
+
+#### 聚合跟发布时间 
+
+- `@DomainEvents`
+- `@AfterDomianEventPublication`
 

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+           targetNamespace="https://github.com/lianpeng0011" xmlns="https://github.com/lianpeng0011">
+
+    <!--定义一个用户对象： 属性有id、name、age -->
+    <xs:complexType name="User">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" />
+            <xs:element name="name" type="xs:string" />
+            <xs:element name="age" type="xs:int" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="UserIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="userId" type="xs:long" />
+                <xs:element name="timestamp" type="xs:long" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="UserResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="user" type="User" />
+                <xs:element name="imestamp" type="xs:long" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+</xs:schema>

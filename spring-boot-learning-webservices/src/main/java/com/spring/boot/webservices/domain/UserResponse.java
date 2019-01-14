@@ -2,7 +2,7 @@
 // 此文件是由 JavaTM Architecture for XML Binding (JAXB) 引用实现 v2.2.8-b130911.1802 生成的
 // 请访问 <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // 在重新编译源模式时, 对此文件的所有修改都将丢失。
-// 生成时间: 2019.01.13 时间 06:51:25 PM CST 
+// 生成时间: 2019.01.14 时间 09:43:59 PM CST 
 //
 
 
@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="user" type="{https://github.com/lianpeng0011}User"/>
- *         &lt;element name="imestamp" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="timestamp" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -38,14 +38,14 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
     "user",
-    "imestamp"
+    "timestamp"
 })
 @XmlRootElement(name = "UserResponse")
 public class UserResponse {
 
     @XmlElement(required = true)
     protected User user;
-    protected long imestamp;
+    protected long timestamp;
 
     /**
      * 获取user属性的值。
@@ -72,26 +72,19 @@ public class UserResponse {
     }
 
     /**
-     * 获取imestamp属性的值。
+     * 获取timestamp属性的值。
      * 
      */
-    public long getImestamp() {
-        return imestamp;
+    public long getTimestamp() {
+        return timestamp;
     }
 
     /**
-     * 设置imestamp属性的值。
+     * 设置timestamp属性的值。
      * 
      */
-    public void setImestamp(long value) {
-        this.imestamp = value;
+    public void setTimestamp(long value) {
+        this.timestamp = value;
     }
 
-    @Override
-    public String toString() {
-        return "UserResponse{" +
-               "user=" + user +
-               ", imestamp=" + imestamp +
-               '}';
-    }
 }

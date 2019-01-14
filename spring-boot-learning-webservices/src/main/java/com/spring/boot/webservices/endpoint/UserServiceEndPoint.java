@@ -25,7 +25,7 @@ public class UserServiceEndPoint {
     @Autowired
     private UserRepository userRepository;
 
-    @PayloadRoot( localPart = "userIdRequest" ,namespace = "https://github.com/lianpeng0011")
+    @PayloadRoot( namespace="https://github.com/lianpeng0011", localPart = "UserIdRequest")
     @ResponsePayload
     public UserResponse getUser( @RequestPayload UserIdRequest request ){
         UserResponse userResponse = new UserResponse();
@@ -34,7 +34,7 @@ public class UserServiceEndPoint {
         Instant instant = Instant.now().ofEpochMilli( request.getTimestamp() );
         ZonedDateTime zonedDateTime = instant.atZone( ZoneId.systemDefault() );
         System.out.println("Web Services 用户ID:"+ request.getUserId() +",请求时间："+ zonedDateTime);
-        userResponse.setImestamp( Instant.now().toEpochMilli() );
+        userResponse.setTimestamp( Instant.now().toEpochMilli() );
         return userResponse;
     }
 }

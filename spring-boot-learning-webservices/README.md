@@ -56,5 +56,19 @@ xjc -d xxxx  -p xxxx    xx.xsd
 # -p 指定输出类的报名
 ```
 
+#### Spring API使用
 
+- `@Endpoint` 创建一个端点，在这个端点中可以创建一个或多个处理传入请求的方法。该类是一个特殊的`Component`，用于处理Spring-WS 中的XML信息。
+- `@PayloadRoot`告诉Spring-WS方法适用于处理XML消息。
+  - `namespace` 设置命名空间
+  - `localPart`本地部分
+- `@RequestPayload` 消息的有效负载作为DOM元素在此方法上传递
+- `@ResponsePayload`表示返回值用作响应消息的有效负载
+
+#### 自动WSDL暴露
+
+- `MessageDispatcherServlet` 会自动检测到`WsdlDefinition`在容器中定义的Bean。
+- `WsdlDefinitionHandlerAdapter` 所有的`WsdlDefinition`的处理器
+- `WsdlDefinition` 将WSDL暴露给客户端
+- `XsdSchema` xsd Schema 的抽象
 

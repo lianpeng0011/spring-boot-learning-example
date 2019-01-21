@@ -24,7 +24,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="user" type="User" />
-                <xs:element name="imestamp" type="xs:long" />
+                <xs:element name="timestamp" type="xs:long" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>

@@ -16,11 +16,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure( HttpSecurity http ) throws Exception {
 
-        http.authorizeRequests().antMatchers( "" ).authenticated()
-                .and().formLogin().loginPage( "" ).and();
+        http.authorizeRequests().antMatchers( "/login" ,"/index").permitAll()
+                .antMatchers( "/user/home" )
+                .hasRole( "ADMIN" )
+                .antMatchers( "/db/**" )
+                .access( "hasRole('ADMIN') and hasRole('DBA')" ).anyRequest()
+                .authenticated()
+                .and()
+                .formLogin();
 
         //CSRF
-        http.csrf().csrfTokenRepository( new CookieCsrfTokenRepository() ).requireCsrfProtectionMatcher(
-                (request) ->  !request.getRequestURI().startsWith( "/login" ) );
+//        http.csrf().csrfTokenRepository( new CookieCsrfTokenRepository() ).requireCsrfProtectionMatcher(
+//                (request) ->  !request.getRequestURI().startsWith( "/login" ) );
     }
 }

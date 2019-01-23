@@ -1,11 +1,11 @@
 package com.spring.boot.springbootlearningsecurity.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @author lianp
@@ -16,21 +16,27 @@ import javax.servlet.http.HttpServletRequest;
 public class HomeController {
 
 
-    @GetMapping( "/home" )
-    public String  home(){
+    @GetMapping( value = { "/home", "" } )
+    public String home() {
         return "home";
     }
 
-    @GetMapping( value = {"/login","index"} )
-    public String loginPage(){
+    @GetMapping( value = { "/login", "/index" } )
+    public String loginPage() {
 
         return "login";
     }
 
     @PostMapping( "/user/login" )
-    public String login( @RequestBody HttpServletRequest request ){
-        System.out.println(request.getParameter( "userName" ));
-        System.out.println(request.getParameter( "password" ));
+    @ResponseStatus( value= HttpStatus.OK)
+    public String login( HttpServletRequest request,@RequestBody Map<String,Object> map ) {
+        System.out.println( request.getParameter( "userName" ) );
+        System.out.println( request.getParameter( "password" ) );
         return "home";
+    }
+    @GetMapping( "/error" )
+    public String error(){
+
+        return "error";
     }
 }

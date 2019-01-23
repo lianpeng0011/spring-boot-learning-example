@@ -42,5 +42,48 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 - 清除`SecurityContextHolder`
 - 重定向`/login?logout`
 
+### 配置多个HttpSecurity
+
+```java
+@EnableWebSecurity
+public class MultiHttpSecurityConfig {
+    @Bean                                                             
+    public UserDetailsService userDetailsService() throws Exception {
+        // ensure the passwords are encoded properly
+        UserBuilder users = User.withDefaultPasswordEncoder();
+        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();        manager.createUser(users.username("user").password("password").roles("USER").build());    manager.createUser(users.username("admin").password("password").roles("USER","ADMIN").build());
+        return manager;
+    }
+
+    @Configuration
+    @Order(1)                                                        
+    public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                .antMatcher("/api/**")                               
+                .authorizeRequests()
+                    .anyRequest().hasRole("ADMIN")
+                    .and()
+                .httpBasic();
+        }
+    }
+
+    @Configuration                                                   
+    public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                .authorizeRequests()
+                    .anyRequest().authenticated()
+                    .and()
+                .formLogin();
+        }
+    }
+}
+```
+
+> @Order 默认最后初始化
+
 
 

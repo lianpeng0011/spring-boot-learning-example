@@ -16,7 +16,6 @@ import java.util.Set;
  * @date 2019/1/22 17:43
  * @since
  **/
-@Service
 public class AnyUserDetailsService implements UserDetailsService {
 
 

@@ -7,8 +7,9 @@
 </head>
 <body>
 <form id="form" method="post" action="/user/login">
-    <label>用户名：</label><input type="text" name="name" value="" />
+    <label>用户名：</label><input type="text" name="username" value="" />
     <label>密码：</label><input type="text" name="pwd" value="" />
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     <br />
     <input type="submit" value="登录" />
 </form>

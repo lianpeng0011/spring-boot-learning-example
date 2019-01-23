@@ -16,17 +16,19 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure( HttpSecurity http ) throws Exception {
 
-        http.authorizeRequests().antMatchers( "/login" ,"/index").permitAll()
-                .antMatchers( "/user/home" )
-                .hasRole( "ADMIN" )
-                .antMatchers( "/db/**" )
-                .access( "hasRole('ADMIN') and hasRole('DBA')" ).anyRequest()
-                .authenticated()
+        http.authorizeRequests().anyRequest().fullyAuthenticated()
                 .and()
-                .formLogin();
+                .formLogin()
+                .usernameParameter( "username" ).passwordParameter( "pwd" )
+                .loginPage( "/login" )
+                .loginProcessingUrl("/user/login")
+                .failureForwardUrl( "/error" )
+                .successForwardUrl( "/home" )
+                .permitAll();
+
 
         //CSRF
 //        http.csrf().csrfTokenRepository( new CookieCsrfTokenRepository() ).requireCsrfProtectionMatcher(
-//                (request) ->  !request.getRequestURI().startsWith( "/login" ) );
+//                ( request ) -> request.getMethod().equals( "POST" ));
     }
 }

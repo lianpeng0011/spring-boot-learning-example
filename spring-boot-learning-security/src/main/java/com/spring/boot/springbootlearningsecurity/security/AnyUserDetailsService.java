@@ -4,6 +4,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -16,6 +18,7 @@ import java.util.Set;
  * @date 2019/1/22 17:43
  * @since
  **/
+@Service
 public class AnyUserDetailsService implements UserDetailsService {
 
 
@@ -27,7 +30,8 @@ public class AnyUserDetailsService implements UserDetailsService {
         Set<SimpleGrantedAuthority> auths = new HashSet<>();
         //给用户添加权限
         auths.add( new SimpleGrantedAuthority("ROLE_USER") );
-        AnyUser user = new AnyUser( username, "{123456}", auths );
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        AnyUser user = new AnyUser( username, encoder.encode( "kingsmart" ), auths );
         user.setNickName( "管理员" );
         user.setLoginName( username );
         return user;

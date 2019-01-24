@@ -1,6 +1,6 @@
 package com.spring.boot.springbootlearningsecurity.controller;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,22 +21,44 @@ public class HomeController {
         return "home";
     }
 
+    @PostMapping( "/success" )
+    public String success(){
+
+        System.out.print("登陆成功");
+        return "home";
+    }
+
     @GetMapping( value = { "/login", "/index" } )
     public String loginPage() {
 
         return "login";
     }
 
-    @PostMapping( "/user/login" )
-    @ResponseStatus( value= HttpStatus.OK)
-    public String login( HttpServletRequest request,@RequestBody Map<String,Object> map ) {
-        System.out.println( request.getParameter( "userName" ) );
-        System.out.println( request.getParameter( "password" ) );
-        return "home";
+    @ResponseBody
+    @RequestMapping("/personal_center")
+    public void login(HttpServletRequest request) {
+        System.out.println("登录成功");
     }
+
     @GetMapping( "/error" )
     public String error(){
 
         return "error";
+    }
+
+    @GetMapping("/user/get")
+    @ResponseBody
+    @Secured( "ROLE_USER" )
+    public String getUser(){
+
+        return "user";
+    }
+
+    @GetMapping("/admin/get")
+    @ResponseBody
+    @Secured( "ROLE_ADMIN" )
+    public String getAdmin(){
+
+        return "admin";
     }
 }

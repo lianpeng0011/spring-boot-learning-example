@@ -38,3 +38,15 @@
 - UDDL
 - WebService API
 - spring boot webServices 整合
+
+### [Spring-boot-learning-Security](https://github.com/lianpeng0011/spring-boot-learning-example/tree/master/spring-boot-learning-security)
+
+- Http Request 授权
+- 会话注销
+- 自定义Security 权限验证
+- CSRF
+- CSP
+- X-Frame-Options
+- XSS
+- Security 方法验证
+

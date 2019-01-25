@@ -8,7 +8,7 @@ Log4j 是目前最流行的Java日志框架之一，虽然在2015年8月已经�
 
 #### 整体架构
 
-![1548404330751](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1548404330751.png)
+![1548404330751](https://raw.githubusercontent.com/lianpeng0011/spring-boot-learning-example/master/spring-boot-learning-log/1548404330751.png)
 
 #### Log4j API
 
